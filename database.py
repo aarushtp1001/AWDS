@@ -97,5 +97,4 @@ CREATE TABLE solar_flares(
     else:
         print('NASA\'s NeoWs/DONKI API returned a 503 Error, i.e., either of their servers are currently down. Please try again after a few hours')
         proceed = False
-
-# init_db('2026-08-01', '2026-08-03', '2026-06-20', '2026-07-10')
+        
