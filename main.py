@@ -53,6 +53,28 @@ while proceed == True:
         print('The created dictionary is:')
         print(stats)
 
+    elif ch == 2:
+        returned_velo = functions.search_asteroids_by_speed()
+
+        if returned_velo == -1:
+            continue
+
+        if returned_velo[0] == 'min':
+            print(f'        The following asteroids were found to have greater velocity than or equal to {returned_velo[1]} m/s:')
+            print('FORMAT: (id, name, min_diameter, max_diameter, potentially_hazardous, close_approach_date, relative_velocity, miss_distance)')
+            print()
+            for record in returned_velo[2]:
+                print(record)
+            print()
+
+        elif returned_velo[0] == 'max':
+            print(f'        The following asteroids were found to have lesser velocity than or equal to {returned_velo[1]} m/s:')
+            print('FORMAT: (id, name, min_diameter, max_diameter, potentially_hazardous, close_approach_date, relative_velocity, miss_distance)')
+            print()
+            for record in returned_velo[2]:
+                print(record)
+            print()
+
     elif ch == 7:
         print('Thank you for using the Astronomical Weather Database System!')
         print('Now exiting...')
@@ -61,4 +83,3 @@ while proceed == True:
     else:
         print('Invalid input, please try again...')
         print()
-
