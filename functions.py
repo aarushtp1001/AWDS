@@ -98,11 +98,48 @@ def display_general_stats():
 
     return general_stats
 
+# Choice 2
+def search_asteroids_by_speed():
+    conn = sqlite3.connect(config.DB_NAME)
+    cur = conn.cursor()
 
-    
+    try: 
+        q = int(input('Would you like to search by minimum velocity or by maximum velocity (1 for minimum, 2 for maximum)? '))
+        print()
+    except: 
+        print('Bad input, please run the program again.')
+        print()
+        return -1
+
+    if q == 1:
+        min_velo = float(input('Enter the minimum velocity in m/s by which you want to search asteroids: '))
+        print()
+        cur.execute('SELECT * FROM asteroids WHERE relative_velocity >= ?;', (min_velo,))
+        asteroid_list = cur.fetchall()
+
+        if len(asteroid_list) < 1:
+            print(f'No asteroid was found to have greater velocity than or equal to {min_velo} m/s.')
+            print()
+            return -1
+
+        else:
+            return 'min', min_velo, asteroid_list
+
+    elif q == 2:
+        max_velo = float(input('Enter the maximum velocity in m/s by which you want to search asteroids: '))
+        print()
+        cur.execute('SELECT * FROM asteroids WHERE relative_velocity <= ?;', (max_velo,))
+        asteroid_list = cur.fetchall()
         
+        if len(asteroid_list) < 1:
+            print(f'No asteroid was found to have lesser velocity than or equal to {max_velo} m/s.')
+            print()
+            return -1
+        
+        else:
+            return 'max', max_velo, asteroid_list 
 
-    
-    
-    
-    
+    else:
+        print('Enter either 1 or 2. Please try again...')
+        print()
+        return -1
