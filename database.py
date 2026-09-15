@@ -77,7 +77,7 @@ CREATE TABLE solar_flares(
             end_time = flare[5]
             end_event_date = flare[6]
             flare_magnitude = flare[7]
-            flare_class = flare[7][0]
+            flare_class = flare[7][0] # potential None error here
             source_location = flare[8]
             active_region_num = flare[9]
 
@@ -99,3 +99,4 @@ CREATE TABLE solar_flares(
         proceed = False
 
 # init_db('2026-08-01', '2026-08-03', '2026-06-20', '2026-07-10')
+
