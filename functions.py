@@ -6,11 +6,11 @@ import json, sqlite3
 def display_menu():
     print()
     print('--------------------------------------------MENU--------------------------------------------')
-    print('1. View general space weather statistics using raw data along with a graphical representation.')
+    print('1. View general space weather statistics.')
     print('2. Search asteroids using speed factor.')
     print('3. Search asteroids using miss-distance factor.')
     print('4. View potentially hazardous asteroids (sorted by miss-distance).')
-    print('5. Search solar flares according to class/region.')
+    print('5. Search solar flares according to class/region/location.')
     print('6. Find all potentially hazardous asteroids that happened to pass by close to Earth when a dangerous (X-Class) solar flare occurred.')
     print('7. Exit.')
     print()
@@ -186,3 +186,81 @@ def search_asteroids_by_miss_dist():
         print('Enter either 1 or 2. Please try again...')
         print()
         return -1
+
+# Choice 4
+def view_pot_hazardous_asteroids():
+    conn = sqlite3.connect(config.DB_NAME)
+    cur = conn.cursor()
+
+    cur.execute('SELECT * FROM asteroids WHERE potentially_hazardous = 1 ORDER BY miss_distance;')
+    asteroid_list = cur.fetchall()
+    asteroid_name_list = []
+
+    print(f'        The following asteroids were found to be potentially hazardous (ordered in ascending order by miss distance in meters):')
+    print('FORMAT: (id, name, min_diameter, max_diameter, potentially_hazardous, close_approach_date, relative_velocity, miss_distance)')
+    print()
+    for asteroid in asteroid_list:
+        print(asteroid)
+        asteroid_name_list.append(asteroid[1])
+    print()
+
+    print('In a nutshell, the asteroids which are potentially hazardous are as follows:')
+    print()
+    for asteroid_name in asteroid_name_list:
+        print(asteroid_name, end=' ')
+    print()
+
+# Choice 5
+def search_flares(factor='class'):
+    conn = sqlite3.connect(config.DB_NAME)
+    cur = conn.cursor()
+
+    # -1 stands for "invalid input", -2 stands for "no values returned".
+    # In the return statements, the order in which the values are returned in the tuple are in increasing order of the capacity required to process the value.
+    # This was done to ensure maximum speed of the main function, although it might only differ in a few milliseconds.
+
+    if factor == 'class':
+        flare_class = input('Enter the flare class you want to search by: ')
+        print()
+
+        if (len(flare_class) != 1):
+            print()
+            print('Try again. Enter a single letter flare class...')
+            print()
+            return -1
+
+        else:
+            flare_class = flare_class.upper()
+            cur.execute('SELECT * FROM solar_flares WHERE flare_class = ?;', (flare_class,))
+            flare_list = cur.fetchall()
+            if len(flare_list) < 1:
+                return -2, flare_class
+            return flare_class, flare_list
+        
+    elif factor == 'region':
+        try:
+            flare_region = int(input('Enter the flare region you want to search by: '))
+        except:
+            print()
+            print('Try again. Enter an integer.')
+            print()
+            return -1
+
+        cur.execute('SELECT * FROM solar_flares WHERE active_region_num = ?;', (flare_region,))
+        flare_list = cur.fetchall()
+        if len(flare_list) < 1:
+            return -2, flare_region
+        
+        return flare_region, flare_list
+
+    else:
+        flare_loc = input('Enter the location of the flare: ')
+        flare_loc = flare_loc.upper()
+
+        cur.execute('SELECT * FROM solar_flares WHERE source_location = ?', (flare_loc,))
+        flare_list = cur.fetchall()
+
+        if len(flare_list) < 1:
+            return -2, flare_loc
+        
+        return flare_loc, flare_list
