@@ -11,7 +11,7 @@ def display_menu():
     print('3. Search asteroids using miss-distance factor.')
     print('4. View potentially hazardous asteroids (sorted by miss-distance).')
     print('5. Search solar flares according to class/region.')
-    print('6. Find all potentially hazardous asteroids that happened to pass by close to Earth when a dangerous solar flare occurred.')
+    print('6. Find all potentially hazardous asteroids that happened to pass by close to Earth when a dangerous (X-Class) solar flare occurred.')
     print('7. Exit.')
     print()
 
@@ -122,9 +122,8 @@ def search_asteroids_by_speed():
             print()
             return -1
 
-        else:
-            return 'min', min_velo, asteroid_list
-
+        return 'min', min_velo, asteroid_list
+            
     elif q == 2:
         max_velo = float(input('Enter the maximum velocity in m/s by which you want to search asteroids: '))
         print()
@@ -136,8 +135,52 @@ def search_asteroids_by_speed():
             print()
             return -1
         
-        else:
-            return 'max', max_velo, asteroid_list 
+        return 'max', max_velo, asteroid_list 
+            
+    else:
+        print('Enter either 1 or 2. Please try again...')
+        print()
+        return -1
+
+# Choice 3
+def search_asteroids_by_miss_dist():
+    conn = sqlite3.connect(config.DB_NAME)
+    cur = conn.cursor()
+
+    try:
+        q = int(input('Would you like to search for asteroids by minimum miss distance or maximum miss distance (1 for minimum, 2 for maximum)? '))
+        print()
+    except:
+        print()
+        print('Bad input, please run the program again.')
+        print()
+        return -1
+
+    if q == 1:
+        min_dist = float(input('Enter the minimum distance in meters by which you want to search asteroids: '))
+        print()
+        cur.execute('SELECT * FROM asteroids WHERE miss_distance >= ?;', (min_dist,))
+        asteroid_list = cur.fetchall()
+
+        if len(asteroid_list) < 1:
+            print(f'No asteroid was found to have greater miss distance than or equal to {min_dist} m/s.')
+            print()
+            return -1
+
+        return 'min', min_dist, asteroid_list 
+            
+    elif q == 2:
+        max_dist = float(input('Enter the maximum distance in meters by which you want to search asteroids: '))
+        print()
+        cur.execute('SELECT * FROM asteroids WHERE miss_distance <= ?;', (max_dist,))
+        asteroid_list = cur.fetchall()
+
+        if len(asteroid_list) < 1:
+            print(f'No asteroid was found to have lesser miss distance than or equal to {max_dist} m/s.')
+            print()
+            return -1
+
+        return 'max', max_dist, asteroid_list
 
     else:
         print('Enter either 1 or 2. Please try again...')
