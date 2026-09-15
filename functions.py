@@ -58,7 +58,8 @@ def display_general_stats():
     cur.execute('SELECT flare_class, COUNT(*) FROM solar_flares GROUP BY flare_class;')
     returned_flare_class_data = cur.fetchall()
     general_stats['flare_class_data'] = dict()
-    # Settings default values.
+    
+    # Setting default values.
     general_stats['flare_class_data']['A'] = 0
     general_stats['flare_class_data']['B'] = 0
     general_stats['flare_class_data']['C'] = 0
