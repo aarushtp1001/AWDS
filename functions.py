@@ -11,9 +11,11 @@ def display_menu():
     print('3. Search asteroids using miss-distance factor.')
     print('4. View potentially hazardous asteroids (sorted by miss-distance).')
     print('5. Search solar flares according to class/region/location.')
-    print('6. Find all potentially hazardous asteroids that happened to pass by close to Earth when a dangerous (X-Class) solar flare occurred.')
+    print('6. Find all potentially hazardous asteroids that happened to pass by close to Earth when a dangerous (X-Class or M-Class) solar flare occurred.')
     print('7. Exit.')
     print()
+
+# Note: -1 stands for "invalid input", -2 stands for "no values returned".
 
 # Choice 1
 def display_general_stats(): 
@@ -58,7 +60,7 @@ def display_general_stats():
     cur.execute('SELECT flare_class, COUNT(*) FROM solar_flares GROUP BY flare_class;')
     returned_flare_class_data = cur.fetchall()
     general_stats['flare_class_data'] = dict()
-    
+
     # Setting default values.
     general_stats['flare_class_data']['A'] = 0
     general_stats['flare_class_data']['B'] = 0
@@ -70,10 +72,14 @@ def display_general_stats():
 
     cur.execute('''SELECT active_region_num, COUNT(*) as freq FROM solar_flares
                    GROUP BY active_region_num ORDER BY freq DESC LIMIT 1;''')
-    most_active_region = cur.fetchone()
+    most_active_region = cur.fetchone() # possible None error
     general_stats['most_active_region'] = dict()
-    general_stats['most_active_region']['region_num'] = most_active_region[0]
-    general_stats['most_active_region']['frequency'] = most_active_region[1]
+    try:
+        general_stats['most_active_region']['region_num'] = most_active_region[0]
+        general_stats['most_active_region']['frequency'] = most_active_region[1]
+    except: # if most_active_region is None
+        general_stats['most_active_region']['region_num'] = None
+        general_stats['most_active_region']['frequency'] = None  
     
     print('--------------------SUMMARY--------------------')
     print(f'> Number of asteroids returned: {general_stats["number_of_asteroids"]}')
@@ -97,6 +103,7 @@ def display_general_stats():
     print(f'> The most active region was region number {general_stats["most_active_region"]["region_num"]} which occurred {general_stats["most_active_region"]["frequency"]} times.')
     print()
 
+    conn.close()
     return general_stats
 
 # Choice 2
@@ -107,40 +114,65 @@ def search_asteroids_by_speed():
     try: 
         q = int(input('Would you like to search by minimum velocity or by maximum velocity (1 for minimum, 2 for maximum)? '))
         print()
-    except: 
+    except:
+        print() 
         print('Bad input, please run the program again.')
         print()
+        conn.close()
         return -1
 
     if q == 1:
-        min_velo = float(input('Enter the minimum velocity in m/s by which you want to search asteroids: '))
+        try: min_velo = float(input('Enter the minimum velocity in m/s by which you want to search asteroids: '))
+        except:
+            print()
+            print('Try again. Enter a floating point number...')
+            print()
+            conn.close()
+            return -1
+        
         print()
+        
         cur.execute('SELECT * FROM asteroids WHERE relative_velocity >= ?;', (min_velo,))
         asteroid_list = cur.fetchall()
 
         if len(asteroid_list) < 1:
+            print()
             print(f'No asteroid was found to have greater velocity than or equal to {min_velo} m/s.')
             print()
-            return -1
+            conn.close()
+            return -2
 
+        conn.close()
         return 'min', min_velo, asteroid_list
             
     elif q == 2:
-        max_velo = float(input('Enter the maximum velocity in m/s by which you want to search asteroids: '))
+        try: max_velo = float(input('Enter the maximum velocity in m/s by which you want to search asteroids: '))
+        except:
+            print()
+            print('Try again. Enter a floating point number...')
+            print()
+            conn.close()
+            return -1
+        
         print()
+
         cur.execute('SELECT * FROM asteroids WHERE relative_velocity <= ?;', (max_velo,))
         asteroid_list = cur.fetchall()
         
         if len(asteroid_list) < 1:
+            print()
             print(f'No asteroid was found to have lesser velocity than or equal to {max_velo} m/s.')
             print()
-            return -1
-        
+            conn.close()
+            return -2
+
+        conn.close()
         return 'max', max_velo, asteroid_list 
             
     else:
         print('Enter either 1 or 2. Please try again...')
         print()
+        conn.close()
         return -1
 
 # Choice 3
@@ -155,37 +187,62 @@ def search_asteroids_by_miss_dist():
         print()
         print('Bad input, please run the program again.')
         print()
+        conn.close()
         return -1
 
     if q == 1:
-        min_dist = float(input('Enter the minimum distance in meters by which you want to search asteroids: '))
+        try: min_dist = float(input('Enter the minimum distance in meters by which you want to search asteroids: '))
+        except:
+            print()
+            print('Try again. Enter a floating point number...')
+            print()
+            conn.close()
+            return -1
+        
         print()
+
         cur.execute('SELECT * FROM asteroids WHERE miss_distance >= ?;', (min_dist,))
         asteroid_list = cur.fetchall()
 
         if len(asteroid_list) < 1:
-            print(f'No asteroid was found to have greater miss distance than or equal to {min_dist} m/s.')
             print()
-            return -1
+            print(f'No asteroid was found to have greater miss distance than or equal to {min_dist} metres.')
+            print()
+            conn.close()
+            return -2
 
+        conn.close()
         return 'min', min_dist, asteroid_list 
             
     elif q == 2:
-        max_dist = float(input('Enter the maximum distance in meters by which you want to search asteroids: '))
+        try: max_dist = float(input('Enter the maximum distance in meters by which you want to search asteroids: '))
+        except:
+            print()
+            print('Try again. Enter a floating point number...')
+            print()
+            conn.close()
+            return -1
+        
         print()
+
         cur.execute('SELECT * FROM asteroids WHERE miss_distance <= ?;', (max_dist,))
         asteroid_list = cur.fetchall()
 
         if len(asteroid_list) < 1:
-            print(f'No asteroid was found to have lesser miss distance than or equal to {max_dist} m/s.')
             print()
-            return -1
+            print(f'No asteroid was found to have lesser miss distance than or equal to {max_dist} metres.')
+            print()
+            conn.close()
+            return -2
 
+        conn.close()
         return 'max', max_dist, asteroid_list
 
     else:
+        print()
         print('Enter either 1 or 2. Please try again...')
         print()
+        conn.close()
         return -1
 
 # Choice 4
@@ -196,6 +253,12 @@ def view_pot_hazardous_asteroids():
     cur.execute('SELECT * FROM asteroids WHERE potentially_hazardous = 1 ORDER BY miss_distance;')
     asteroid_list = cur.fetchall()
     asteroid_name_list = []
+
+    if len(asteroid_list) < 1:
+        print()
+        print('No potentially hazardous asteroids were found in this date range.')
+        print()
+        return
 
     print(f'        The following asteroids were found to be potentially hazardous (ordered in ascending order by miss distance in meters):')
     print('FORMAT: (id, name, min_diameter, max_diameter, potentially_hazardous, close_approach_date, relative_velocity, miss_distance)')
@@ -211,12 +274,13 @@ def view_pot_hazardous_asteroids():
         print(asteroid_name, end=' ')
     print()
 
+    conn.close()
+
 # Choice 5
 def search_flares(factor='class'):
     conn = sqlite3.connect(config.DB_NAME)
     cur = conn.cursor()
 
-    # -1 stands for "invalid input", -2 stands for "no values returned".
     # In the return statements, the order in which the values are returned in the tuple are in increasing order of the capacity required to process the value.
     # This was done to ensure maximum speed of the main function, although it might only differ in a few milliseconds.
 
@@ -228,6 +292,7 @@ def search_flares(factor='class'):
             print()
             print('Try again. Enter a single letter flare class...')
             print()
+            conn.close()
             return -1
 
         else:
@@ -235,7 +300,9 @@ def search_flares(factor='class'):
             cur.execute('SELECT * FROM solar_flares WHERE flare_class = ?;', (flare_class,))
             flare_list = cur.fetchall()
             if len(flare_list) < 1:
+                conn.close()
                 return -2, flare_class
+            conn.close()
             return flare_class, flare_list
         
     elif factor == 'region':
@@ -245,13 +312,16 @@ def search_flares(factor='class'):
             print()
             print('Try again. Enter an integer.')
             print()
+            conn.close()
             return -1
 
         cur.execute('SELECT * FROM solar_flares WHERE active_region_num = ?;', (flare_region,))
         flare_list = cur.fetchall()
         if len(flare_list) < 1:
+            conn.close()
             return -2, flare_region
-        
+
+        conn.close()
         return flare_region, flare_list
 
     else:
@@ -262,6 +332,33 @@ def search_flares(factor='class'):
         flare_list = cur.fetchall()
 
         if len(flare_list) < 1:
+            conn.close()
             return -2, flare_loc
-        
+
+        conn.close()
         return flare_loc, flare_list
+
+# Choice 6
+def find_coincidence():
+    conn = sqlite3.connect(config.DB_NAME)
+    cur = conn.cursor()
+
+    # Taking maximum miss distance as 20,000,000,000 meters, and considering X and M Class solar flares.
+    command = """
+SELECT asteroids.close_approach_date as coincident_date, asteroids.name, asteroids.potentially_hazardous, asteroids.miss_distance, solar_flares.id, solar_flares.flare_class 
+FROM asteroids JOIN solar_flares ON asteroids.close_approach_date = solar_flares.peak_event_date
+WHERE (asteroids.potentially_hazardous = 1) AND (asteroids.miss_distance <= 20000000000) AND (solar_flares.flare_class = 'X' OR solar_flares.flare_class = 'M')
+ORDER BY asteroids.close_approach_date, solar_flares.flare_class DESC, asteroids.miss_distance, asteroids.name; 
+"""
+    cur.execute(command)
+    data = cur.fetchall()
+
+    if len(data) < 1:
+        print()
+        print("No potentially hazardous asteroid's close flyby (within 2 x 10^10 meters) coincided with an X-Class or M-Class solar flare.")
+        print()
+        conn.close()
+        return -2
+
+    conn.close()
+    return data
