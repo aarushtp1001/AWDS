@@ -15,8 +15,8 @@ print()
 # '2026-08-01', '2026-08-03', '2026-06-20', '2026-07-10'
 asteroid_start_date = input('Enter the beginning date from where you want to start searching for asteroids from: ')
 asteroid_end_date = input('Enter the ending date from where you want to start searching for asteroids from: ')
-flare_start_date = input('Enter the beginning date from where you want to start searching for solar flares from: ')
-flare_end_date = input('Enter the ending date from where you want to start searching for solar flares from: ')
+flare_start_date = input('Enter the beginning date from where you want to end searching for solar flares from: ')
+flare_end_date = input('Enter the ending date from where you want to end searching for solar flares from: ')
 
 # Some default values for quick testing...
 if not len(asteroid_start_date):
@@ -24,7 +24,6 @@ if not len(asteroid_start_date):
     asteroid_end_date = '2026-08-03'
     flare_start_date = '2026-06-20'
     flare_end_date = '2026-07-10'
-    
 print()
 
 proceed = True
@@ -61,6 +60,9 @@ while proceed == True:
         if returned_velo == -1:
             continue
 
+        elif returned_velo == -2:
+            continue
+
         if returned_velo[0] == 'min':
             print(f'        The following asteroids were found to have greater velocity than or equal to {returned_velo[1]} m/s:')
             print('FORMAT: (id, name, min_diameter, max_diameter, potentially_hazardous, close_approach_date, relative_velocity, miss_distance)')
@@ -83,6 +85,9 @@ while proceed == True:
         returned_dist = functions.search_asteroids_by_miss_dist()
 
         if returned_dist == -1:
+            continue
+
+        elif returned_dist == -2:
             continue
 
         if returned_dist[0] == 'min':
@@ -108,6 +113,7 @@ while proceed == True:
 
     elif ch == 5:
         q = input('Would you like to search for solar flares using class, region, or location (default --> class)? ')
+        print()
 
         if (q.lower() == 'class') or (q == ''):
             returned_data = functions.search_flares()
@@ -115,8 +121,11 @@ while proceed == True:
                 continue
             elif returned_data[0] == -2:
                 if (not returned_data[1].isalpha()) or (returned_data[1] not in 'ABCMX'):
+                    print()
                     print(f'{returned_data[1]} is not a valid solar flare class.')
+                    print()
                     continue
+                print()
                 print(f'No solar flares of {returned_data[1]} Class were found.')
                 print()
                 continue
@@ -132,6 +141,7 @@ while proceed == True:
             if returned_data == -1:
                 continue
             elif returned_data[0] == -2:
+                print()
                 print(f'No solar flares from the Active Region Number {returned_data[1]} were found.')
                 print()
                 continue
@@ -145,6 +155,7 @@ while proceed == True:
         elif q.lower() == 'location':
             returned_data = functions.search_flares('location')
             if returned_data[0] == -2:
+                print()
                 print(f'No solar flares from the location {returned_data[1]} were found.')
                 print()
                 continue
@@ -160,6 +171,17 @@ while proceed == True:
             print('Invalid option, try again.')
             print()
             continue
+
+
+    elif ch == 6:
+        returned_data = functions.find_coincidence()
+        if returned_data == -2: continue
+        print(f'        The following data was found:')
+        print('FORMAT: (coincident_date, asteroids.name, asteroids.potentially_hazardous, asteroids.miss_distance, solar_flares.id, solar_flares.flare_class)')
+        print()
+        for record in returned_data:
+            print(record)
+        print()
 
 
     elif ch == 7:
