@@ -12,7 +12,6 @@ def asteroid_data_fetcher(start_date, end_date):
         full_data = f.read().decode()
         dict_data = json.loads(full_data)
     except: 
-        print('Server error occurred! Restart program...')
         return [] 
     
     ## id (primary key), name, min diameter, max diameter, potentially hazardous, close approach date, relative velocity, miss distance
@@ -53,7 +52,6 @@ def solar_data_fetcher(start_date, end_date):
         full_data = f.read().decode()
         dict_data = json.loads(full_data)
     except:
-        print('Server error occurred! Restart program...')
         return []
 
     ## flrID (primary key), beginTime, peakTime, endTime, classType, sourceLocation, activeRegionNum
