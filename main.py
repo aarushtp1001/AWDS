@@ -33,7 +33,7 @@ try:
     print('The Astronomical Weather Database has been successfully created!')
     print()
 except:
-    print('Error has occurred! Exiting program now...')
+    print('NASA\'s NeoWs/DONKI API(s) returned a 503 Error, i.e., either of their servers are currently down or an unexpected error has occurred. Please try again.')
     proceed = False
 
 while proceed == True:
