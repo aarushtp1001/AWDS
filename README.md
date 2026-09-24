@@ -22,3 +22,8 @@ The AMDS encompasses the following modules:
 - **3. database.py :** Uses the sqlite3 module to create an SQLite database, and subsequently create two tables, namely asteroids and solar_flares. It then uses all the extracted data from fetcher and feeds it into the created database tables.
 - **4. functions.py :** This file houses all the user-defined functions which are used in the project.
 - **5. main.py :** The main file which orchestrates all the other 4 files to create a cohesive menu-driven program.
+## Requirements / Setup
+## Example Usage / Output
+## What I Learned
+I learnt how to utilize built-in Python packages and modules along with their methods in order to create an application that focuses on two aspects of space weather. I understood the procedure behind obtaining JSON data and parsing it to extract the relevant information. I also learnt how to create databases and how to work with them using SQL, through Python. Most importantly, I realized the convenience of adapting the modular approach to big coding project like this one, because not only does this approach make debugging easier, it makes it significantly more intuitive to understand. In addition, I also got over my fear of creating projects with hundreds of lines of code, because projects involving such concepts naturally tend to cross 500 lines of code, so that anxiety of having to forcibly create a long project was gone. 
+## Credits / API References
