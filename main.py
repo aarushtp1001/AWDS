@@ -6,7 +6,7 @@ import functions
 conn = sqlite3.connect(config.DB_NAME)
 cur = conn.cursor()
 
-print('Welcome to the Astronomical Weather Database System!')
+print('Welcome to the Astronomical Weather Database System AWDS (nasa-space-pipeline)!')
 print()
 
 print('We need to populate the database first.')
