@@ -1,4 +1,4 @@
-# Astronomical Weather Database System (AWDS)
+# Astronomical Weather Database System (AWDS) 
 ## What It Does
 This database system uses NASA's APIs to fetch asteroid and solar flare data. Then, it feeds the relevant data into an SQLite database. After creating the tables in the database, the system provides the user with specialized functions and SQL commands that he/she can perform on the database.
 ## Features
