@@ -19,6 +19,7 @@ flare_start_date = input('Enter the beginning date from where you want to end se
 flare_end_date = input('Enter the ending date from where you want to end searching for solar flares from: ')
 
 # Some default values for quick testing...
+# These values worked during the testing phase of my project, but they stop working after a few months from the specified date.
 if not len(asteroid_start_date):
     asteroid_start_date = '2026-08-01'
     asteroid_end_date = '2026-08-03'
