@@ -19,22 +19,25 @@ flare_start_date = input('Enter the beginning date from where you want to end se
 flare_end_date = input('Enter the ending date from where you want to end searching for solar flares from: ')
 
 # Some default values for quick testing...
-# These values worked during the testing phase of my project, but they stop working after a few months from the specified date.
+# These values won't work after a few months from the specified date. 
 if not len(asteroid_start_date):
     asteroid_start_date = '2026-08-01'
     asteroid_end_date = '2026-08-03'
     flare_start_date = '2026-06-20'
     flare_end_date = '2026-07-10'
 print()
-
 proceed = True
+
 print('Populating database...')
 try:
     database.init_db(asteroid_start_date, asteroid_end_date, flare_start_date, flare_end_date)
     print('The Astronomical Weather Database has been successfully created!')
     print()
 except:
-    print('NASA\'s NeoWs/DONKI API(s) returned a 503 Error, i.e., either of their servers are currently down or an unexpected error has occurred. Please try again.')
+    print('Either one of the two errors occurred:')
+    print('1. The starting and ending dates were not specified in the previous prompt, and the default dates stopped working.')
+    print('2. NASA\'s NeoWs/DONKI API(s) returned a 503 Error, i.e., either of their servers are currently down or an unexpected error has occurred.')
+    print('In either case, please run the program again.')
     proceed = False
 
 while proceed == True:
