@@ -16,7 +16,7 @@ In AWDS, I used:
 ## How It Works
 The user runs main.py, which then prompts the user for starting and ending dates of gathering space weather data. If the data is successfully received, the program creates and adds relevant data to an SQLite database into two tables, asteroids and solar_flares. Once the database is created, the program then prompts the user for selecting a command from the given menu. Once the user selects a command, the program executes that command using SQL and returns the relevant data.
 ## Project Structure
-The AMDS encompasses the following modules:
+The AWDS encompasses the following modules:
 - **config.py :**  Used for storing the API demo key, the base URLs for NeoWs and DONKI, and the name of the SQLite database.
 - **fetcher.py :** Uses the urllib package for fetching the JSON data, and then parses it to extract the useful information which is relevant to the project.
 - **database.py :** Uses the sqlite3 module to create an SQLite database, and subsequently create two tables, namely asteroids and solar_flares. It then uses all the extracted data from fetcher and feeds it into the created database tables.
@@ -33,7 +33,7 @@ For running this system, you need:
 3. Open the terminal inside the inner-most folder.
 4. Run the command: 'python main.py'
 ## Example Usage / Output
-When main.py is executed in the terminal, it prompts the user for dates by which it searches for asteroids and solar flares. Often times the NASA DONKI server experiences a 503 Error, which causes the program to immediately terminate. In that case, the user may run the program 2-3 times until it successfully creates the tables.
+When main.py is executed in the terminal, it prompts the user for dates by which it searches for asteroids and solar flares. Often times the NASA DONKI server experiences a 503 Error, which causes the program to immediately terminate. In that case, the user may run the program 2-3 times until it successfully creates the tables. If the program fails even after multiple attempts, then NASA's servers may be down.
 For example, if the user chose option 4 and then option 7, the output would look as follows, provided that the default dates work.
 ### Sample Output (awds_demo.png)
 ![Sample Output](awds_demo.png)
