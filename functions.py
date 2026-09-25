@@ -81,7 +81,7 @@ def display_general_stats():
         general_stats['most_active_region']['region_num'] = None
         general_stats['most_active_region']['frequency'] = None  
     
-    print('--------------------SUMMARY--------------------')
+    print('-------------------------------------------SUMMARY-------------------------------------------')
     print(f'> Number of asteroids returned: {general_stats["number_of_asteroids"]}')
     print(f'> Number of flares returned: {general_stats["number_of_flares"]}')
     print()
