@@ -23,6 +23,15 @@ The AMDS encompasses the following modules:
 - **functions.py :** This file houses all the user-defined functions which are used in the project.
 - **main.py :** The main file which orchestrates all the other 4 files to create a cohesive menu-driven program.
 ## Requirements / Setup
+### Requirements
+For running this system, you need:
+- Python 3.x
+- An Internet connection for API calls
+### Setup
+1. Download the ZIP file of the repository.
+2. Extract the files in a suitable place on your computer.
+3. Open the terminal inside the inner-most folder.
+4. Run the command: 'python main.py'
 ## Example Usage / Output
 ## What I Learned
 I learnt how to utilize built-in Python packages and modules along with their methods in order to create an application that focuses on two aspects of space weather. I understood the procedure behind obtaining JSON data and parsing it to extract the relevant information. I also learnt how to create databases and how to work with them using SQL, through Python. Most importantly, I realized the convenience of adapting the modular approach to big coding project like this one, because not only does this approach make debugging easier, it makes it significantly more intuitive to understand. In addition, I also got over my fear of creating projects with hundreds of lines of code, because projects involving such concepts naturally tend to cross 500 lines of code, so that anxiety of having to forcibly create a long project was gone. 
