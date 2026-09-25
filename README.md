@@ -11,8 +11,8 @@ Using AWDS, one can perform the following tasks:
 - Finding all potentially hazardous asteroids that happened to pass by close to Earth when a dangerous (X-Class or M-Class) solar flare occurred.
 ## NASA APIs Used
 In AWDS, I used:
-- **NASA NeoWs API :** I used this for obtaining asteroid data.
-- **NASA DONKI API :** I used this for obtaining solar flare data.
+- **NASA NeoWs API :** for obtaining asteroid data.
+- **NASA DONKI API :** for obtaining solar flare data.
 ## How It Works
 The user runs main.py, which then prompts the user for starting and ending dates of gathering space weather data. If the data is successfully received, the program creates and adds relevant data to an SQLite database into two tables, asteroids and solar_flares. Once the database is created, the program then prompts the user for selecting a command from the given menu. Once the user selects a command, the program executes that command using SQL and returns the relevant data.
 ## Project Structure
