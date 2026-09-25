@@ -36,7 +36,7 @@ For running this system, you need:
 When main.py is executed in the terminal, it prompts the user for dates by which it searches for asteroids and solar flares. Often times the NASA DONKI server experiences a 503 Error, which causes the program to immediately terminate. In that case, the user may run the program 2-3 times until it successfully creates the tables.
 For example, if the user chose option 4 and then option 7, the output would look as follows, provided that the default dates work.
 ### Sample Output
-
+![Sample Output](awds_demo.png)
 ## What I Learnt
 I learnt how to utilize built-in Python packages and modules along with their methods in order to create an application that focuses on two aspects of space weather. I understood the procedure behind obtaining JSON data and parsing it to extract the relevant information. I also learnt how to create databases and how to work with them using SQL, through Python. Most importantly, I realized the convenience of adapting the modular approach to big coding projects like this one, because not only does this approach make debugging easier, it makes it significantly more intuitive to understand. In addition, I also got over my fear of creating projects with hundreds of lines of code, because projects involving such concepts naturally tend to cross 500 lines of code, so that anxiety of having to forcibly create a long project was gone. 
 ## Credits / API References
